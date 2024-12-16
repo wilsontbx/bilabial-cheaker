@@ -88,37 +88,41 @@
             const bilabialSounds = ["P", "B", "M"];
 
             function checkBilabialSounds() {
-                const word = document
+                const input = document
                     .getElementById("wordInput")
                     .value.toLowerCase();
                 const resultDiv = document.getElementById("result");
 
-                if (!word) {
+                if (!input) {
                     resultDiv.textContent = "Please enter a word.";
                     resultDiv.className = "result fail";
                     return;
                 }
 
-                const phonemes = pronouncing.phonesForWord(word);
-                console.log(phonemes);
+                const words = input.trim().split(" ");
 
                 let hasBilabial = false;
-                for (const phoneme of phonemes) {
-                    const phonemeParts = phoneme.split(" "); // Split into individual sounds
-                    if (
-                        phonemeParts.some((sound) =>
-                            bilabialSounds.includes(sound)
-                        )
-                    ) {
-                        hasBilabial = true;
+
+                for (const word of words) {
+                    const phonemes = pronouncing.phonesForWord(word);
+
+                    for (const phoneme of phonemes) {
+                        const phonemeParts = phoneme.split(" ");
+                        if (
+                            phonemeParts.some((sound) =>
+                                bilabialSounds.includes(sound)
+                            )
+                        ) {
+                            hasBilabial = true;
+                        }
                     }
                 }
 
                 if (hasBilabial) {
-                    resultDiv.innerText = `"${word}" can touch 💁‍♂️`;
+                    resultDiv.innerText = `"${input.trim()}" can touch 💁‍♂️`;
                     resultDiv.className = "result success";
                 } else {
-                    resultDiv.innerText = `"${word}" cannot touch ⛔`;
+                    resultDiv.innerText = `"${input.trim()}" cannot touch ⛔`;
                     resultDiv.className = "result fail";
                 }
             }
